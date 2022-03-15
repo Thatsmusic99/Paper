@@ -1,0 +1,20 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Thatsmusic99 <25277367+Thatsmusic99@users.noreply.github.com>
+Date: Tue, 15 Mar 2022 18:14:31 +0000
+Subject: [PATCH] Expose chunk information when a data version is causing
+ issues
+
+
+diff --git a/src/main/java/net/minecraft/world/level/chunk/storage/ChunkSerializer.java b/src/main/java/net/minecraft/world/level/chunk/storage/ChunkSerializer.java
+index 8246204ce5d8f825c7796f87006e658d7a019876..217601f7ca381b8c4410a62774e954bef1ca05bb 100644
+--- a/src/main/java/net/minecraft/world/level/chunk/storage/ChunkSerializer.java
++++ b/src/main/java/net/minecraft/world/level/chunk/storage/ChunkSerializer.java
+@@ -140,7 +140,7 @@ public class ChunkSerializer {
+         if (nbt.contains("DataVersion", 99)) {
+             int dataVersion = nbt.getInt("DataVersion");
+             if (!JUST_CORRUPT_IT && dataVersion > CURRENT_DATA_VERSION) {
+-                new RuntimeException("Server attempted to load chunk saved with newer version of minecraft! " + dataVersion + " > " + CURRENT_DATA_VERSION).printStackTrace();
++                new RuntimeException("Server attempted to load chunk saved with newer version of minecraft! " + dataVersion + " > " + CURRENT_DATA_VERSION + ", chunk position is " + chunkPos.x + ", " + chunkPos.z).printStackTrace();
+                 System.exit(1);
+             }
+         }
